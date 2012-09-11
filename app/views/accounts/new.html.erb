@@ -1,0 +1,53 @@
+<%= content_for :head do %>
+  <%= account_chooser_script(
+    loginUrl:      new_session_path,
+    signupUrl:     new_account_path,
+    userStatusUrl: status_account_path
+  ) %>
+<% end %>
+
+<% if @account.errors.present? %>
+  <div class="alert">
+    <p><strong>Errors</strong></p>
+    <%= @account.errors.full_messages.join('<br>').html_safe %>
+  </div>
+<% end %>
+
+<%= form_for @account, url: account_path, html: {class: 'form-horizontal'} do |f| %>
+  <legend>Signup</legend>
+  <div class="photo">
+    <%= image_tag 'https://iknow.jp/images/default/big/user.jpg' %>
+    <%= f.hidden_field :photo, id: :photoUrl %>
+  </div>
+  <div class="attributes">
+    <div class="control-group">
+      <%= f.label :name, class: 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :name, id: :displayName, placeholder: :name %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :email, class: 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :email, id: :email, placeholder: :email %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :password, class: 'control-label' %>
+      <div class="controls">
+        <%= f.password_field :password, id: :password, placeholder: :password %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :password_confirmation, 'Confirm Password', class: 'control-label' %>
+      <div class="controls">
+        <%= f.password_field :password_confirmation, id: :password, placeholder: :password %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <%= f.submit 'Signup', class: 'btn btn-primary btn-large' %>
+      </div>
+    </div>
+  </div>
+<% end %>

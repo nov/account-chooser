@@ -1,0 +1,28 @@
+<%= content_for :head do %>
+  <%= account_chooser_script(
+    loginUrl:      new_session_path,
+    signupUrl:     new_account_path,
+    userStatusUrl: status_account_path
+  ) %>
+<% end %>
+
+<%= form_tag session_path, class: 'form-horizontal' do |f| %>
+  <legend>Login</legend>
+  <div class="control-group">
+    <%= label_tag :email, nil, class: 'control-label' %>
+    <div class="controls">
+      <%= text_field_tag :email, params[:email], placeholder: :email %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= label_tag :password, nil, class: 'control-label' %>
+    <div class="controls">
+      <%= password_field_tag :password, params[:password], placeholder: :password %>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <%= submit_tag 'Login', class: 'btn btn-primary btn-large' %>
+    </div>
+  </div>
+<% end %>

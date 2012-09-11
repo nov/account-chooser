@@ -1,0 +1,9 @@
+<%= content_for :head do %>
+  <%= account_chooser_script(
+    storeAccount: {
+      email: current_account.email,
+      displayName: current_account.name,
+      photoUrl: current_account.photo
+    }
+  ) %>
+<% end %>
