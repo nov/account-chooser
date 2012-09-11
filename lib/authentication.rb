@@ -25,6 +25,10 @@ module Authentication
       redirect_to root_url and return false
     end
 
+    def require_anonymous_access
+      redirect_to root_url if authenticated?
+    end
+
     def authenticate!(account)
       raise Unauthorized unless account
       session[:current_account] = account.id

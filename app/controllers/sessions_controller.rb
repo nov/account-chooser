@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+  before_filter :require_authentication,   only:   :destroy
+  before_filter :require_anonymous_access, except: :destroy
+
   def new
   end
 

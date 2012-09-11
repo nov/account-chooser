@@ -1,6 +1,6 @@
 <% if authenticated? %>
   <h2>Hello, <%= current_account.name %>!</h2>
-  <%= link_to 'Logout', session_url, class: 'btn btn-danger btn-large', method: :delete %>
+  <%= link_to 'Logout', session_url, class: 'btn btn-warning btn-large', method: :delete %>
   <%= link_to 'Delete Account', account_url, class: 'btn btn-danger btn-large', method: :delete %>
 <% else %>
   <%= link_to 'Login', new_session_url, class: 'btn btn-success btn-large' %>
