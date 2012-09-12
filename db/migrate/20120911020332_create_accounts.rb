@@ -7,6 +7,6 @@ class CreateAccounts < ActiveRecord::Migration
       t.timestamps
     end
     add_index :accounts, :email, unique: true
-    add_index :accounts, :identifier, unique: true, alllow_nil: true
+    add_index :accounts, :identifier, unique: true, allow_nil: true
   end
 end

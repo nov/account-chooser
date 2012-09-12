@@ -3,10 +3,15 @@ class AccountsController < ApplicationController
   before_filter :require_anonymous_access, except: [:show, :destroy, :status, :connect]
 
   def status
-    registered = Account.where(email: params[:email]).exists?
-    render json: {
-      registered: registered
-    }
+    provider = OpenIDConnect::Discovery::Provider.discover! params[:email]
+    json = if provider
+      {authUri: provider.location}
+    else
+      registered = Account.where(email: params[:email]).exists?
+      {registered: registered}
+    end
+    logger.info json
+    render json: json
   end
 
   def connect
