@@ -4,13 +4,10 @@ class AccountsController < ApplicationController
 
   def status
     provider = OpenIDConnect::Discovery::Provider.discover! params[:email]
-    json = if provider
-      {authUri: provider.location}
-    else
-      registered = Account.where(email: params[:email]).exists?
-      {registered: registered}
-    end
-    render json: json
+    render json: {authUri: provider.location}
+  rescue OpenIDConnect::Discovery::DiscoveryFailed => e
+    registered = Account.where(email: params[:email]).exists?
+    render json: {registered: registered}
   end
 
   def connect
