@@ -15,3 +15,7 @@
 .content {
   min-height: 250px;
 }
+#google-identity-toolkit {
+  margin-top: 5px;
+  float: right;
+}

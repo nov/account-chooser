@@ -1,5 +1,5 @@
 <%= content_for :head do %>
-  <%= account_chooser_script(
+  <%= AccountChooser::Script.load(
     storeAccount: {
       email: current_account.email,
       displayName: current_account.name,

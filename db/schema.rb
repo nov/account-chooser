@@ -17,11 +17,13 @@ ActiveRecord::Schema.define(:version => 20120911020332) do
     t.string   "email",           :null => false
     t.string   "name",            :null => false
     t.string   "photo"
-    t.string   "password_digest", :null => false
+    t.string   "password_digest"
+    t.string   "identifier"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
 
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
+  add_index "accounts", ["identifier"], :name => "index_accounts_on_identifier", :unique => true
 
 end

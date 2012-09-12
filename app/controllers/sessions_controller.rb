@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
-  before_filter :require_authentication,   only:   :destroy
-  before_filter :require_anonymous_access, except: :destroy
+  before_filter :require_authentication,   only: :destroy
+  before_filter :require_anonymous_access, only: :new
 
   def new
   end
@@ -8,7 +8,11 @@ class SessionsController < ApplicationController
   def create
     account = Account.where(email: params[:email]).first
     authenticate! account.try(:authenticate, params[:password])
-    redirect_to :account
+    if request.xhr?
+      render json: {status: 'OK'}
+    else
+      redirect_to :account
+    end
   end
 
   def destroy

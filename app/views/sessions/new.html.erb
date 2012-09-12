@@ -1,5 +1,5 @@
 <%= content_for :head do %>
-  <%= account_chooser_script(
+  <%= AccountChooser::Script.load(
     loginUrl:      new_session_path,
     signupUrl:     new_account_path,
     userStatusUrl: status_account_path

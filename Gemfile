@@ -11,6 +11,7 @@ end
 
 group :development, :test do
   gem 'sqlite3'
+  gem 'quiet_assets'
 end
 
 group :production do
@@ -20,3 +21,4 @@ end
 gem 'unicorn'
 gem 'jquery-rails'
 gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'rest-client'
