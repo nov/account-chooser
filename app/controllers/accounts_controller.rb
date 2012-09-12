@@ -10,7 +10,6 @@ class AccountsController < ApplicationController
       registered = Account.where(email: params[:email]).exists?
       {registered: registered}
     end
-    logger.info json
     render json: json
   end
 
