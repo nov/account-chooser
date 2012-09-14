@@ -8,7 +8,7 @@ Web::Application.routes.draw do
     post  :status
     match :connect
   end
-  resource :open_id, only: :create
+  resource :open_id, only: :show
   resource :session
 
   root to: 'top#index'
