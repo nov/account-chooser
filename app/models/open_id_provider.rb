@@ -63,7 +63,7 @@ class OpenIdProvider < ActiveRecord::Base
       account = Account.new(
         open_id: open_id,
         name: provider_domain,
-        email: 'me@provider_domain'
+        email: "#{SecureRandom.hex(16)}@#{provider_domain}"
       )
       account.skip_password_validation!
       account.save!
