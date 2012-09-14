@@ -65,7 +65,7 @@ class OpenIdProvider < ActiveRecord::Base
         name: provider_domain,
         email: 'me@provider_domain'
       )
-      account.skip_password_validation = true
+      account.skip_password_validation!
       account.save!
       account
     end

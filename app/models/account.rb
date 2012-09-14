@@ -10,12 +10,16 @@ class Account < ActiveRecord::Base
   validates :name,     presence: true
   validates :password, presence: {unless: :skip_password_validation}
 
+  def skip_password_validation!
+    account.password_digest ||= BCrypt::Password.create(SecureRandom.hex(16)).to_s
+    account.skip_password_validation = true
+  end
+
   class << self
     def authenticate(assertion) # for Google Identity Toolkit
       account = where(email: assertion[:verifiedEmail]).first_or_initialize
       account.name ||= assertion[:displayName]
-      account.password_digest ||= BCrypt::Password.create(SecureRandom.hex(16)).to_s
-      account.skip_password_validation = true
+      account.skip_password_validation!
       account.save && account
     end
   end
