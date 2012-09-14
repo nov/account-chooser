@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account Chooser</title>
+  <title><%= Web::Application.config.name %></title>
   <%= csrf_meta_tags %>
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
@@ -12,10 +12,10 @@
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= GoogleIdentityToolkit::Script.load("google-identity-toolkit", current_account, {
-    companyName: "Account Chooser",
-    callbackUrl: connect_account_url,
-    userStatusUrl: status_account_path,
-    loginUrl: session_path,
+    companyName: Web::Application.config.name,
+    callbackUrl: connect_google_identity_toolkit_url,
+    userStatusUrl: status_google_identity_toolkit_path,
+    loginUrl: authenticate_google_identity_toolkit_path,
     signupUrl: new_account_path,
     homeUrl: root_path,
     logoutUrl: session_path
@@ -26,7 +26,7 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <%= link_to 'Account Chooser', root_path, class: :brand %>
+        <%= link_to Web::Application.config.name, root_path, class: :brand %>
         <div id="google-identity-toolkit"></div>
       </div>
     </div>

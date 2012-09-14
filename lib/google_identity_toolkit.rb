@@ -45,7 +45,7 @@ module GoogleIdentityToolkit
       </script>
       SCRIPT
       if account
-        userData = {
+        user_data = {
           email: account.email,
           displayName: account.name,
           photoUrl: account.photo
@@ -53,8 +53,8 @@ module GoogleIdentityToolkit
         script << <<-SCRIPT
         <script type="text/javascript">
           $(function (){
-            window.google.identitytoolkit.updateSavedAccount(#{userData.to_json});
-            window.google.identitytoolkit.showSavedAccount(#{userData[:email].to_json});
+            window.google.identitytoolkit.updateSavedAccount(#{user_data.to_json});
+            window.google.identitytoolkit.showSavedAccount(#{user_data[:email].to_json});
           });
         </script>
         SCRIPT
@@ -67,13 +67,6 @@ module GoogleIdentityToolkit
       <script type='text/javascript' src='https://ajax.googleapis.com/jsapi'></script>
       <script type='text/javascript'> 
         google.load("identitytoolkit", "1.0", {packages: ["notify"]});
-      </script> 
-      <script type='text/javascript'>
-        <% if authenticated? %>
-          window.google.identitytoolkit.notifyFederatedSuccess();
-        <% else %>
-          window.google.identitytoolkit.notifyFederatedError();
-        <% end %>
       </script>
       SCRIPT
       script << if account

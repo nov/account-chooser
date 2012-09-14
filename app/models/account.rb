@@ -3,7 +3,7 @@ class Account < ActiveRecord::Base
   has_secure_password
 
   validates :email,      presence: true, uniqueness: true
-  validates :identifier, uniqueness: true
+  validates :identifier,                 uniqueness: true, allow_nil: true
   validates :name,       presence: true
   validates :password,   presence: true, if: ->(this) { this.identifier.blank? }
 

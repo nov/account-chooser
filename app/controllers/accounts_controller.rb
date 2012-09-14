@@ -1,20 +1,6 @@
 class AccountsController < ApplicationController
-  before_filter :require_authentication,   only:   [:show, :destroy]
-  before_filter :require_anonymous_access, except: [:show, :destroy, :status, :connect]
-
-  def status
-    provider = OpenIDConnect::Discovery::Provider.discover! params[:email]
-    render json: {authUri: provider.location}
-  rescue OpenIDConnect::Discovery::DiscoveryFailed => e
-    registered = Account.where(email: params[:email]).exists?
-    render json: {registered: registered}
-  end
-
-  def connect
-    assertion = GoogleIdentityToolkit.verify request
-    account = Account.authenticate(assertion)
-    authenticate! account if account
-  end
+  before_filter :require_authentication,   only: [:show, :destroy]
+  before_filter :require_anonymous_access, only: [:new, :create]
 
   def show
   end

@@ -8,11 +8,7 @@ class SessionsController < ApplicationController
   def create
     account = Account.where(email: params[:email]).first
     authenticate! account.try(:authenticate, params[:password])
-    if request.xhr?
-      render json: {status: 'OK'}
-    else
-      redirect_to :account
-    end
+    redirect_to :account
   end
 
   def destroy
