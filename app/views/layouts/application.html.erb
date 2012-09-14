@@ -11,7 +11,7 @@
   <![endif]-->
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-  <%= GoogleIdentityToolkit::Script.load("google-identity-toolkit", current_account, {
+  <%#= GoogleIdentityToolkit::Script.load("google-identity-toolkit", current_account, {
     companyName: Web::Application.config.name,
     callbackUrl: connect_google_identity_toolkit_url,
     userStatusUrl: status_google_identity_toolkit_path,
