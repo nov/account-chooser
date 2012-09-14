@@ -1,7 +1,8 @@
 class AccountChooserController < ApplicationController
   def status
+    authorization_uri = discover_connect_op
     if authorization_uri
-      render json: {authUri: provider.location}
+      render json: {authUri: authorization_uri}
     else
       registered = Account.where(email: params[:email]).exists?
       render json: {registered: registered}
@@ -10,7 +11,7 @@ class AccountChooserController < ApplicationController
 
   private
 
-  def authorization_uri
+  def discover_connect_op
     provider = OpenIDConnect::Discovery::Provider.discover! params[:email]
     config = OpenIDConnect::Discovery::Provider::Config.discover! provider.location
     client_credentials = OpenIDConnect::Client::Registrar.new(
@@ -21,7 +22,7 @@ class AccountChooserController < ApplicationController
       user_id_type: 'pairwise'
     ).associate!
     OpenIDConnect::Client.new(
-      config.as_json.merge(identifier: client.identifier)
+      config.as_json.merge(identifier: client_credentials.identifier)
     ).authorization_uri(
       response_type: :code,
       nonce: SecureRandom.hex(16),
