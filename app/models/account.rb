@@ -11,8 +11,8 @@ class Account < ActiveRecord::Base
   validates :password, presence: {unless: :skip_password_validation}
 
   def skip_password_validation!
-    account.password_digest ||= BCrypt::Password.create(SecureRandom.hex(16)).to_s
-    account.skip_password_validation = true
+    self.password_digest ||= BCrypt::Password.create(SecureRandom.hex(16)).to_s
+    self.skip_password_validation = true
   end
 
   class << self
