@@ -1,6 +1,6 @@
 class AccountChooserController < ApplicationController
   def status
-    authorization_uri = discover_connect_op
+    authorization_uri = connect_discovery
     if authorization_uri
       render json: {authUri: authorization_uri}
     else
@@ -11,21 +11,14 @@ class AccountChooserController < ApplicationController
 
   private
 
-  def discover_connect_op
-    provider = OpenIDConnect::Discovery::Provider.discover! params[:email]
-    config = OpenIDConnect::Discovery::Provider::Config.discover! provider.location
-    client_credentials = OpenIDConnect::Client::Registrar.new(
-      config.registration_endpoint,
-      application_name: Web::Application.config.name,
-      application_type: 'web',
-      redirect_uris: open_id_url,
-      user_id_type: 'pairwise'
-    ).associate!
-    OpenIDConnect::Client.new(
-      config.as_json.merge(identifier: client_credentials.identifier)
-    ).authorization_uri(
+  def connect_discovery
+    issuer = OpenIDConnect::Discovery::Provider.discover!(params[:email]).location
+    provider = OpenIdProvider.where(issuer: issuer).first_or_create!
+    provider.associate! open_id_url(provider) unless provider.associated?
+    nonce = session[:nonce] = SecureRandom.hex(16)
+    provider.client.authorization_uri(
       response_type: :code,
-      nonce: SecureRandom.hex(16),
+      nonce: nonce,
       scope: [:openid, :profile, :email]
     )
   rescue OpenIDConnect::Discovery::DiscoveryFailed => e
