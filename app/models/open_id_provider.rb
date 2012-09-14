@@ -1,5 +1,5 @@
 class OpenIdProvider < ActiveRecord::Base
-  attr_accessible :identifier, :secret, :expires_at, :issuer, :authorization_endpoint, :token_endpoint, :user_info_endpoint, :x509_url
+  attr_accessible :identifier, :secret, :redirect_uri, :expires_at, :issuer, :authorization_endpoint, :token_endpoint, :user_info_endpoint, :x509_url
 
   has_many :open_ids
 
@@ -23,6 +23,7 @@ class OpenIdProvider < ActiveRecord::Base
     update_attributes!(
       identifier:             client.identifier,
       secret:                 client.secret,
+      redirect_uri:           redirect_uri,
       expires_at:             client.expires_in.try(:from_now),
       authorization_endpoint: config.authorization_endpoint,
       token_endpoint:         config.token_endpoint,
@@ -35,6 +36,7 @@ class OpenIdProvider < ActiveRecord::Base
     @client ||= OpenIDConnect::Client.new(
       identifier:             identifier,
       secret:                 secret,
+      redirect_uri:           redirect_uri,
       authorization_endpoint: authorization_endpoint,
       user_info_endpoint:     user_info_endpoint,
       token_endpoint:         token_endpoint

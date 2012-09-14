@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20120914054937) do
     t.string   "issuer",                 :null => false
     t.string   "identifier"
     t.string   "secret"
+    t.string   "redirect_uri"
     t.string   "authorization_endpoint"
     t.string   "token_endpoint"
     t.string   "user_info_endpoint"
