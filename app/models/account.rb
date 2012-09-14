@@ -4,7 +4,7 @@ class Account < ActiveRecord::Base
 
   attr_accessor :skip_password_validation
 
-  has_one :open_id
+  has_many :open_ids
 
   validates :email,    presence: true, uniqueness: true
   validates :name,     presence: true

@@ -26,6 +26,7 @@ class OpenIdProvider < ActiveRecord::Base
       expires_at:             client.expires_in.try(:from_now),
       authorization_endpoint: config.authorization_endpoint,
       token_endpoint:         config.token_endpoint,
+      user_info_endpoint:     config.user_info_endpoint,
       x509_url:               config.x509_url
     )
   end
@@ -35,12 +36,13 @@ class OpenIdProvider < ActiveRecord::Base
       identifier:             identifier,
       secret:                 secret,
       authorization_endpoint: authorization_endpoint,
+      user_info_endpoint:     user_info_endpoint,
       token_endpoint:         token_endpoint
     )
   end
 
   def public_key
-    @cert ||= OpenSSL::X509::Certificate.new open(x509_url).read
+    @cert ||= OpenSSL::X509::Certificate.new RestClient.get(x509_url).body
     @cert.public_key
   end
 
@@ -56,16 +58,17 @@ class OpenIdProvider < ActiveRecord::Base
     )
     open_id = self.open_ids.find_or_initialize_by_identifier _id_token_.user_id
     open_id.save!
+    user_info = access_token.user_info!
     provider_domain = URI.parse(issuer).host
     if open_id.account
       open_id.account
     else
-      account = Account.new(
-        open_id: open_id,
-        name: provider_domain,
-        email: "#{SecureRandom.hex(16)}@#{provider_domain}"
+      account = Account.where(email: user_info.email).first_or_initialize(
+        name: user_info.name
       )
       account.skip_password_validation!
+      account.open_ids << open_id
+      logger.info account
       account.save!
       account
     end

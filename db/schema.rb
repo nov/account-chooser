@@ -18,13 +18,11 @@ ActiveRecord::Schema.define(:version => 20120914054937) do
     t.string   "name",            :null => false
     t.string   "photo"
     t.string   "password_digest"
-    t.string   "identifier"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
 
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
-  add_index "accounts", ["identifier"], :name => "index_accounts_on_identifier", :unique => true
 
   create_table "open_id_providers", :force => true do |t|
     t.string   "issuer",                 :null => false
@@ -32,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20120914054937) do
     t.string   "secret"
     t.string   "authorization_endpoint"
     t.string   "token_endpoint"
+    t.string   "user_info_endpoint"
     t.string   "x509_url"
     t.datetime "expires_at"
     t.datetime "created_at",             :null => false
@@ -41,7 +40,7 @@ ActiveRecord::Schema.define(:version => 20120914054937) do
   create_table "open_ids", :force => true do |t|
     t.integer  "account_id"
     t.integer  "open_id_provider_id"
-    t.string   "identifier"
+    t.string   "identifier",          :null => false
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
   end
