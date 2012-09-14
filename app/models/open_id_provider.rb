@@ -56,6 +56,18 @@ class OpenIdProvider < ActiveRecord::Base
     )
     open_id = self.open_ids.find_or_initialize_by_identifier _id_token_.user_id
     open_id.save!
-    open_id.account || Account.create!(open_id: open_id)
+    provider_domain = URI.parse(issuer).host
+    if open_id.account
+      open_id.account
+    else
+      account = Account.new(
+        open_id: open_id,
+        name: provider_domain,
+        email: 'me@provider_domain'
+      )
+      account.skip_password_validation = true
+      account.save!
+      account
+    end
   end
 end
