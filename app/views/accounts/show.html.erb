@@ -1,6 +1,6 @@
 <%= content_for :head do %>
   <%= AccountChooser::Script.load(
-    storeAccount: {
+    storedAccount: {
       email: current_account.email,
       displayName: current_account.name,
       photoUrl: current_account.photo
