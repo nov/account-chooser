@@ -5,9 +5,9 @@ gem 'rails'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
-  # gem 'uglifier'
-  gem 'less-rails'
-  gem 'twitter-bootstrap-rails'
+  gem 'uglifier'
+  gem 'sass-rails'
+  gem 'bootstrap-sass'
 end
 
 group :development, :test do
@@ -18,7 +18,6 @@ end
 
 group :production do
   gem 'pg'
-  gem 'therubyracer-heroku'
 end
 
 gem 'unicorn'
