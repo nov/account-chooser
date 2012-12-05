@@ -1,9 +1,9 @@
 <% if authenticated? %>
   <h2>Hello, <%= current_account.name %>!</h2>
-  <%= link_to 'Logout', session_url, class: 'btn btn-warning btn-large', method: :delete %>
-  <%= link_to 'Delete Account', account_url, class: 'btn btn-danger btn-large', method: :delete %>
+  <%= link_to 'Logout', session_path, class: 'btn btn-warning btn-large', method: :delete %>
+  <%= link_to 'Delete Account', account_path, class: 'btn btn-danger btn-large', method: :delete %>
 <% else %>
-  <%= link_to 'Login (Account Chooser)', new_session_url, class: 'btn btn-success btn-large' %>
-  <%= link_to 'Login (Google Identity Toolkit)', new_session_url, class: 'btn btn-success btn-large' %>
-  <%= link_to 'Signup', new_account_url, class: 'btn btn-primary btn-large' %>
+  <%= link_to 'Login (Account Chooser)', new_session_path, class: 'btn btn-success btn-large' %>
+  <%= link_to 'Login (Google Identity Toolkit)', google_identity_toolkit_path, class: 'btn btn-success btn-large' %>
+  <%= link_to 'Signup', new_account_path, class: 'btn btn-primary btn-large' %>
 <% end %>
