@@ -6,6 +6,7 @@ group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'uglifier'
+  gem 'libv8', '~> 3.11.8'
   gem 'therubyracer'
   gem 'less-rails'
   gem 'twitter-bootstrap-rails'
