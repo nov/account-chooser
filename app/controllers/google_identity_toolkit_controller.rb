@@ -1,11 +1,14 @@
 class GoogleIdentityToolkitController < AccountChooserController
+  def show
+  end
+
   def status
     super
   end
 
   def connect
     assertion = GoogleIdentityToolkit.verify request
-    account = Account.authenticate(assertion)
+    account = Account.authenticate assertion
     authenticate! account if account
   end
 

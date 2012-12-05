@@ -3,7 +3,7 @@ Web::Application.routes.draw do
   resource :account_chooser, only: [] do
     post :status
   end
-  resource :google_identity_toolkit, only: [] do
+  resource :google_identity_toolkit, only: [:show] do
     post  :authenticate
     post  :status
     match :connect

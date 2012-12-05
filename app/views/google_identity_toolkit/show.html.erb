@@ -1,0 +1,10 @@
+<%= content_for :head do %>
+  <%= GoogleIdentityToolkit::Script.init(
+    callbackUrl:   connect_google_identity_toolkit_url,
+    userStatusUrl: status_google_identity_toolkit_path,
+    loginUrl:      authenticate_google_identity_toolkit_path,
+    signupUrl:     new_account_path,
+    homeUrl:       root_path,
+    logoutUrl:     session_path
+  ) %>
+<% end %>

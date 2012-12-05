@@ -3,6 +3,10 @@ module GoogleIdentityToolkit
 
   class InvalidAssertion < StandardError; end
 
+  def version
+    2
+  end
+
   def developer_key
     'AIzaSyCP35KLQejpzJtpyYwiJhyR-KGGPG99fu4'
   end
@@ -10,82 +14,65 @@ module GoogleIdentityToolkit
   def verify(request)
     params = {
       requestUri: request.url,
-      postBody: request.post? ? request.body.read : request.query_string
+      postBody:   request.post? ? request.body.read : request.query_string
     }
-    Rails.logger.info params
-    endpoint = "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=#{developer_key}"
+    endpoint = "https://www.googleapis.com/identitytoolkit/v#{version}/relyingparty/verifyAssertion?key=#{developer_key}"
     response = RestClient.post endpoint, params.to_json, :content_type => :json
     assertion = JSON.parse response, symbolize_names: true
-    raise InvalidAssertion.new('no verified email') unless assertion.include? :verifiedEmail
+    raise InvalidAssertion.new('no verified email') unless assertion.include? :emailVerified
     assertion
-  rescue RestClient::RequestFailed, JSON::ParseError => e
+  rescue RestClient::RequestFailed, JSON::ParserError => e
     raise InvalidAssertion.new(e.message)
   end
 
   module Script
     module_function
 
-    def load(target_dom_id, account, options = {})
+    def load_script(*packages)
+      <<-SCRIPT
+        <script type='text/javascript' src='https://ajax.googleapis.com/jsapi'></script>
+        <script type="text/javascript" src="https://www.accountchooser.com/client.js"></script>
+        <script type="text/javascript">
+          google.load("identitytoolkit", "#{GoogleIdentityToolkit.version}", {packages: #{packages.to_json}});
+        </script>
+      SCRIPT
+    end
+
+    def init(options = {})
       options.merge!(
         developerKey: GoogleIdentityToolkit.developer_key,
         idps: ["Gmail", "AOL", "Hotmail", "Yahoo"],
         tryFederatedFirst: true,
-        useCachedUserStatus: false
+        useContextParam: true
       )
       script = <<-SCRIPT
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js"></script>
-      <script type="text/javascript" src="https://ajax.googleapis.com/jsapi"></script>
-      <script type="text/javascript">
-        google.load("identitytoolkit", "1.0", {packages: ["ac", "notify"]});
-        $(function (){
-          window.google.identitytoolkit.setConfig(#{options.to_json});
-          $('##{target_dom_id}').accountChooser();
-        });
-      </script>
-      SCRIPT
-      if account
-        user_data = {
-          email: account.email,
-          displayName: account.name,
-          photoUrl: account.photo
-        }
-        script << <<-SCRIPT
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js"></script>
+        #{load_script 'ac'}
         <script type="text/javascript">
           $(function (){
-            window.google.identitytoolkit.updateSavedAccount(#{user_data.to_json});
-            window.google.identitytoolkit.showSavedAccount(#{user_data[:email].to_json});
+            window.google.identitytoolkit.setConfig(#{options.to_json});
+            window.google.identitytoolkit.init();
           });
         </script>
-        SCRIPT
-      end
+      SCRIPT
       script.html_safe
     end
 
-    def notify(account)
+    def store(account, options = {})
+      user_data = {
+        email:       account.email,
+        displayName: account.name,
+        photoUrl:    account.photo
+      }
       script = <<-SCRIPT
-      <script type='text/javascript' src='https://ajax.googleapis.com/jsapi'></script>
-      <script type='text/javascript'> 
-        google.load("identitytoolkit", "1.0", {packages: ["notify"]});
-      </script>
+        #{load_script 'store'}
+        <script type="text/javascript">
+          $(function (){
+            window.google.identitytoolkit.storeAccount(#{user_data.to_json}, #{options[:homeUrl].to_json});
+          });
+        </script>
       SCRIPT
-      script << if account
-        options = {
-          email: account.email,
-          registered: true
-        }
-        <<-SCRIPT
-        <script type='text/javascript'>
-          window.google.identitytoolkit.notifyFederatedSuccess(#{options.to_json});
-        </script>
-        SCRIPT
-      else
-        <<-SCRIPT
-        <script type='text/javascript'>
-          window.google.identitytoolkit.notifyFederatedError();
-        </script>
-        SCRIPT
-      end
       script.html_safe
     end
   end

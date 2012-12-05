@@ -11,15 +11,6 @@
   <![endif]-->
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-  <%= GoogleIdentityToolkit::Script.load("google-identity-toolkit", current_account, {
-    companyName: Web::Application.config.name,
-    callbackUrl: connect_google_identity_toolkit_url,
-    userStatusUrl: status_google_identity_toolkit_path,
-    loginUrl: authenticate_google_identity_toolkit_path,
-    signupUrl: new_account_path,
-    homeUrl: root_path,
-    logoutUrl: session_path
-  }) %>
   <%= yield :head %>
 </head>
 <body class="<%= controller_name %>">
@@ -27,7 +18,6 @@
     <div class="navbar-inner">
       <div class="container">
         <%= link_to Web::Application.config.name, root_path, class: :brand %>
-        <div id="google-identity-toolkit"></div>
       </div>
     </div>
   </div>
@@ -36,9 +26,9 @@
       <div class="row">
         <div class="span12">
           <% if flash[:error].present? %>
-            <div class="alert">
-              <%= flash[:error] %>
-            </div>
+          <div class="alert">
+            <%= flash[:error] %>
+          </div>
           <% end %>
           <%= yield %>
         </div>

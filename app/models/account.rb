@@ -17,8 +17,8 @@ class Account < ActiveRecord::Base
 
   class << self
     def authenticate(assertion) # for Google Identity Toolkit
-      account = where(email: assertion[:verifiedEmail]).first_or_initialize
-      account.name ||= assertion[:displayName]
+      account = where(email: assertion[:email]).first_or_initialize
+      account.name ||= [assertion[:lastName], assertion[:firstName]].join(' ')
       account.skip_password_validation!
       account.save && account
     end
