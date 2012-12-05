@@ -5,7 +5,7 @@ gem 'rails'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
-  gem 'uglifier'
+  # gem 'uglifier'
   gem 'less-rails'
   gem 'twitter-bootstrap-rails'
 end
