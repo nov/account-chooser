@@ -6,8 +6,6 @@ group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'uglifier'
-  gem 'libv8', '~> 3.11.8'
-  gem 'therubyracer'
   gem 'less-rails'
   gem 'twitter-bootstrap-rails'
 end
@@ -15,10 +13,12 @@ end
 group :development, :test do
   gem 'sqlite3'
   gem 'quiet_assets'
+  gem 'therubyracer'
 end
 
 group :production do
   gem 'pg'
+  gem 'therubyracer-heroku'
 end
 
 gem 'unicorn'
