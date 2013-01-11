@@ -1,4 +1,6 @@
 class AccountChooserController < ApplicationController
+  after_filter :logging_response
+
   def status
     authorization_uri = connect_discovery
     if authorization_uri
@@ -23,5 +25,9 @@ class AccountChooserController < ApplicationController
     )
   rescue OpenIDConnect::Discovery::DiscoveryFailed => e
     nil
+  end
+
+  def logging_response
+    logger.info response.body
   end
 end
