@@ -14,7 +14,7 @@ class AccountChooserController < ApplicationController
   private
 
   def connect_discovery
-    issuer = OpenIDConnect::Discovery::Provider.discover!(params[:email]).location
+    issuer = OpenIDConnect::Discovery::Provider.discover!(params[:email]).issuer
     provider = OpenIdProvider.where(issuer: issuer).first_or_create!
     provider.associate! open_id_url(provider) unless provider.associated?
     nonce = session[:nonce] = SecureRandom.hex(16)
