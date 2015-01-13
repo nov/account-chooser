@@ -23,7 +23,7 @@ class AccountChooserController < ApplicationController
       nonce: nonce,
       scope: [:openid, :profile, :email]
     )
-  rescue OpenIDConnect::Discovery::DiscoveryFailed => e
+  rescue => e
     nil
   end
 
