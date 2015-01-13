@@ -2,7 +2,8 @@
   <%= AccountChooser::Script.load(
     loginUrl:      new_session_path,
     signupUrl:     new_account_path,
-    userStatusUrl: status_account_chooser_path
+    userStatusUrl: status_account_chooser_path,
+    providers:     [:google, :facebook]
   ) %>
 <% end %>
 

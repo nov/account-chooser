@@ -7,7 +7,7 @@ group :assets do
   gem 'coffee-rails'
   gem 'uglifier'
   gem 'sass-rails'
-  gem 'bootstrap-sass'
+  gem 'bootstrap-sass', '2.3.0.1'
 end
 
 group :development, :test do

@@ -1,9 +1,15 @@
-<%= content_for :head do %>
-  <%= AccountChooser::Script.load(
+<%
+  ac_action = {
     storedAccount: {
       email: current_account.email,
       displayName: current_account.name,
       photoUrl: current_account.photo
     }
-  ) %>
+  }
+%>
+
+<h3>Logged-in</h3>
+<pre><%= JSON.pretty_generate ac_action %></pre>
+<%= content_for :head do %>
+  <%= AccountChooser::Script.load ac_action %>
 <% end %>
