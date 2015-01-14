@@ -12,17 +12,9 @@ module GoogleIdentityToolkit
   end
 
   def verify(request)
-    params = {
-      requestUri: request.url,
-      postBody:   request.post? ? request.body.read : request.query_string
-    }
-    endpoint = "https://www.googleapis.com/identitytoolkit/v#{version}/relyingparty/verifyAssertion?key=#{developer_key}"
-    response = RestClient.post endpoint, params.to_json, :content_type => :json
-    assertion = JSON.parse response, symbolize_names: true
-    raise InvalidAssertion.new('no verified email') unless assertion.include? :emailVerified
-    assertion
-  rescue RestClient::RequestFailed, JSON::ParserError => e
-    raise InvalidAssertion.new(e.message)
+    id_token_string = request.cookies[:gtoken]
+    id_token = JSON::JWT.decode id_token_string, :skip_verification # TODO: actually, need to verify id_token signature.
+
   end
 
   module Script
@@ -35,7 +27,7 @@ module GoogleIdentityToolkit
       SCRIPT
     end
 
-    def login(selector, options = {})
+    def widget(selector, options = {})
       options.merge!(
         apiKey: GoogleIdentityToolkit.developer_key
       )

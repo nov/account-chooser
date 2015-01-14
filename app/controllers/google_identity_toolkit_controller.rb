@@ -7,8 +7,8 @@ class GoogleIdentityToolkitController < AccountChooserController
   end
 
   def connect
-    assertion = GoogleIdentityToolkit.verify request
-    account = Account.authenticate assertion
+    id_token = GoogleIdentityToolkit.verify request
+    account = Account.authenticate id_token
     authenticate! account if account
   end
 
