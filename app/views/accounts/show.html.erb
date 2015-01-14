@@ -4,8 +4,8 @@
       email: current_account.email,
       displayName: current_account.name,
       photoUrl: current_account.photo,
-      providerId: nil
-    }
+      providerId: current_provider.try(:issuer)
+    }.delete_if { |k,v| v.blank? }
   }
 %>
 

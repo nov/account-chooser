@@ -57,7 +57,7 @@ class OpenIdProvider < ActiveRecord::Base
     open_id.save!
     userinfo = access_token.userinfo!
     provider_domain = URI.parse(issuer).host
-    if open_id.account
+    account = if open_id.account
       open_id.account
     else
       account = Account.where(email: userinfo.email).first_or_initialize(
@@ -69,5 +69,6 @@ class OpenIdProvider < ActiveRecord::Base
       account.save!
       account
     end
+    [account, open_id]
   end
 end
