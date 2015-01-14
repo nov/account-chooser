@@ -4,10 +4,10 @@ ruby '2.2.0'
 gem 'rails', '~>3.2.11'
 
 group :assets do
+  gem 'sass', '3.2.13'
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'uglifier'
-  gem 'sass-rails'
   gem 'bootstrap-sass', '2.3.0.1'
 end
 
