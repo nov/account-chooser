@@ -2,6 +2,9 @@
 
 <%= content_for :head do %>
   <%= GoogleIdentityToolkit::Script.login('#git_button',
-    signInSuccessUrl: connect_google_identity_toolkit_url
+    widgetUrl: google_identity_toolkit_url,
+    signInSuccessUrl: connect_google_identity_toolkit_path,
+    idp: [:google],
+    popupMode: true
   ) %>
 <% end %>

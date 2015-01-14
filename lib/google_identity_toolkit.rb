@@ -42,12 +42,10 @@ module GoogleIdentityToolkit
       script = <<-SCRIPT
         #{load_script}
         <script type="text/javascript">
-          /*
           window.google.identitytoolkit.signInButton(
             '#{selector}',
             #{options.to_json}
           );
-          */
           window.google.identitytoolkit.start(
             '#{selector}',
             #{options.to_json}
