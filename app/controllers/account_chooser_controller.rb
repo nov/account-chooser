@@ -16,7 +16,8 @@ class AccountChooserController < ApplicationController
   def connect_discovery
     issuer = OpenIDConnect::Discovery::Provider.discover!(params[:email]).issuer
     provider = OpenIdProvider.where(issuer: issuer).first_or_create!
-    provider.associate! open_id_url(provider) unless provider.associated?
+    redirect_uri = open_id_url(provider)
+    provider.associate! redirect_uri unless provider.associated?
     nonce = session[:nonce] = SecureRandom.hex(16)
     provider.client.authorization_uri(
       response_type: :code,
@@ -24,6 +25,7 @@ class AccountChooserController < ApplicationController
       scope: [:openid, :profile, :email]
     )
   rescue => e
+    logger.info e
     nil
   end
 

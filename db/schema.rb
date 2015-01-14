@@ -25,17 +25,13 @@ ActiveRecord::Schema.define(:version => 20120914054937) do
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
 
   create_table "open_id_providers", :force => true do |t|
-    t.string   "issuer",                 :null => false
+    t.string   "issuer",       :null => false
     t.string   "identifier"
     t.string   "secret"
     t.string   "redirect_uri"
-    t.string   "authorization_endpoint"
-    t.string   "token_endpoint"
-    t.string   "user_info_endpoint"
-    t.string   "x509_url"
     t.datetime "expires_at"
-    t.datetime "created_at",             :null => false
-    t.datetime "updated_at",             :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "open_ids", :force => true do |t|
