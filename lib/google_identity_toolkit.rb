@@ -4,11 +4,11 @@ module GoogleIdentityToolkit
   class InvalidAssertion < StandardError; end
 
   def version
-    2
+    3
   end
 
   def developer_key
-    'AIzaSyCP35KLQejpzJtpyYwiJhyR-KGGPG99fu4'
+    'AIzaSyAhM-n9L6LNS9oDVZ_4trTlZ8UjtQi029c'
   end
 
   def verify(request)
@@ -28,32 +28,30 @@ module GoogleIdentityToolkit
   module Script
     module_function
 
-    def load_script(*packages)
+    def load_script
       <<-SCRIPT
-        <script type='text/javascript' src='https://ajax.googleapis.com/jsapi'></script>
-        <script type="text/javascript" src="https://www.accountchooser.com/client.js"></script>
-        <script type="text/javascript">
-          google.load("identitytoolkit", "#{GoogleIdentityToolkit.version}", {packages: #{packages.to_json}});
-        </script>
+        <script type="text/javascript" src="//www.gstatic.com/authtoolkit/js/gitkit.js"></script>
+        <link type=text/css rel=stylesheet href="//www.gstatic.com/authtoolkit/css/gitkit.css" />
       SCRIPT
     end
 
-    def init(options = {})
+    def login(selector, options = {})
       options.merge!(
-        developerKey: GoogleIdentityToolkit.developer_key,
-        idps: ["Gmail", "AOL", "Hotmail", "Yahoo"],
-        tryFederatedFirst: true,
-        useContextParam: true
+        apiKey: GoogleIdentityToolkit.developer_key
       )
       script = <<-SCRIPT
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js"></script>
-        #{load_script 'ac'}
+        #{load_script}
         <script type="text/javascript">
-          $(function (){
-            window.google.identitytoolkit.setConfig(#{options.to_json});
-            window.google.identitytoolkit.init();
-          });
+          /*
+          window.google.identitytoolkit.signInButton(
+            '#{selector}',
+            #{options.to_json}
+          );
+          */
+          window.google.identitytoolkit.start(
+            '#{selector}',
+            #{options.to_json}
+          );
         </script>
       SCRIPT
       script.html_safe
@@ -66,7 +64,7 @@ module GoogleIdentityToolkit
         photoUrl:    account.photo
       }
       script = <<-SCRIPT
-        #{load_script 'store'}
+        #{load_script}
         <script type="text/javascript">
           $(function (){
             window.google.identitytoolkit.storeAccount(#{user_data.to_json}, #{options[:homeUrl].to_json});

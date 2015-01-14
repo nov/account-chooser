@@ -1,10 +1,7 @@
+<div id="git_button"></div>
+
 <%= content_for :head do %>
-  <%= GoogleIdentityToolkit::Script.init(
-    callbackUrl:   connect_google_identity_toolkit_url,
-    userStatusUrl: status_google_identity_toolkit_path,
-    loginUrl:      authenticate_google_identity_toolkit_path,
-    signupUrl:     new_account_path,
-    homeUrl:       root_path,
-    logoutUrl:     session_path
+  <%= GoogleIdentityToolkit::Script.login('#git_button',
+    signInSuccessUrl: connect_google_identity_toolkit_url
   ) %>
 <% end %>
