@@ -3,11 +3,7 @@ module GoogleIdentityToolkit
 
   class InvalidAssertion < StandardError; end
 
-  def version
-    3
-  end
-
-  def developer_key
+  def api_key
     'AIzaSyAhM-n9L6LNS9oDVZ_4trTlZ8UjtQi029c'
   end
 
@@ -29,7 +25,7 @@ module GoogleIdentityToolkit
 
     def widget(selector, options = {})
       options.merge!(
-        apiKey: GoogleIdentityToolkit.developer_key
+        apiKey: GoogleIdentityToolkit.api_key
       )
       script = <<-SCRIPT
         #{load_script}

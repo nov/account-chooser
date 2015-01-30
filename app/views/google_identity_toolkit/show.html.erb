@@ -4,6 +4,7 @@
   <%= GoogleIdentityToolkit::Script.widget('#git-widget',
     widgetUrl: google_identity_toolkit_url,
     signInSuccessUrl: connect_google_identity_toolkit_path,
+    signOutUrl: logout_path,
     idps: [:googleplus, :yahoo],
     loginFirst: true
   ) %>

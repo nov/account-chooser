@@ -10,6 +10,7 @@ Web::Application.routes.draw do
   end
   resources :open_ids, only: :show
   resource :session
+  get :logout, to: 'session#destroy'
 
   root to: 'top#index'
 end
